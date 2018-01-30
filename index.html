@@ -103,8 +103,14 @@
     <input type="text">
 </div>
 
-
 <script>
+    setTimeout(function() {
+        alert(document.documentElement.clientHeight + ' ' + window.innerHeight);
+    }, 2000);
+
+    setTimeout(function() {
+        alert(document.documentElement.clientHeight + ' ' + window.innerHeight);
+    }, 5000);
 
 </script>
 </body>
