@@ -7,13 +7,13 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <style>
-        html, body, .cont {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            overflow: hidden;
-        }
+        /*html, body, .cont {*/
+            /*position: absolute;*/
+            /*width: 100%;*/
+            /*height: 100%;*/
+            /*margin: 0;*/
+            /*overflow: hidden;*/
+        /*}*/
 
         * {
             box-sizing: border-box;
@@ -36,10 +36,11 @@
             border-color: blue;
             height: 50px;
             width:100%;
-            position: absolute;
+            /*position: absolute;*/
             bottom: 0;
             display:flex;
             align-items:center;
+            height: 9000px;
         }
 
         .body {
@@ -49,6 +50,7 @@
             bottom: 50px;
             right: 0;
             left: 0;
+            height: 200px;
         }
 
         .rt {
@@ -109,6 +111,39 @@
     var heightBoard = document.documentElement.clientHeight - window.innerHeight;
     var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
+
+    function preventDefault(e) {
+        e = e || window.event;
+        if (e.preventDefault)
+            e.preventDefault();
+        e.returnValue = false;
+    }
+
+    function preventDefaultForScrollKeys(e) {
+        if (keys[e.keyCode]) {
+            preventDefault(e);
+            return false;
+        }
+    }
+
+    function disableScroll() {
+        if (window.addEventListener) // older FF
+            window.addEventListener('DOMMouseScroll', preventDefault, false);
+        window.onwheel = preventDefault; // modern standard
+        window.onmousewheel = document.onmousewheel = preventDefault; // older browsers, IE
+        window.ontouchmove  = preventDefault; // mobile
+        document.onkeydown  = preventDefaultForScrollKeys;
+    }
+
+    // disableScroll();
+
+
+    var defaultPrevent=function(e){e.preventDefault();};
+    document.querySelector('.body').addEventListener("touchstart", defaultPrevent);
+    document.querySelector('.body').addEventListener("touchmove" , defaultPrevent);
+    document.body.addEventListener("touchstart", defaultPrevent);
+    document.body.addEventListener("touchmove" , defaultPrevent);
+
     if (iOS) {
         var input = document.querySelector('input');
         var cont = document.querySelector('.cont');
@@ -117,7 +152,7 @@
             setTimeout(function () {
                 cont.style.height = window.innerHeight +'px';
                 document.body.scrollTop = document.documentElement.scrollTop = 0;
-            }, 50)
+            }, 0);
         });
         document.addEventListener('blur', function() {
             cont.style.height = window.innerHeight +'px';
