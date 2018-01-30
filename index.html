@@ -107,19 +107,24 @@
 
 <script>
     var heightBoard = document.documentElement.clientHeight - window.innerHeight;
+    var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
-    var input = document.querySelector('input');
-    var cont = document.querySelector('.cont');
+    if (iOS) {
+        var input = document.querySelector('input');
+        var cont = document.querySelector('.cont');
 
-    input.addEventListener('focus', function() {
-        setTimeout(function () {
+        input.addEventListener('focus', function() {
+            setTimeout(function () {
+                cont.style.height = window.innerHeight +'px';
+                document.body.scrollTop = document.documentElement.scrollTop = 0;
+            }, 50)
+        });
+        document.addEventListener('blur', function() {
             cont.style.height = window.innerHeight +'px';
-            document.body.scrollTop = document.documentElement.scrollTop = 0;
-        }, 50)
-    });
-    document.addEventListener('blur', function() {
-        cont.style.height = window.innerHeight +'px';
-    }, true);
+        }, true);
+    }
+
+
 </script>
 </body>
 </html>
