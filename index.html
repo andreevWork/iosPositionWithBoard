@@ -27,14 +27,14 @@
 
         .head {
             border-color: red;
-            height: 100px;
+            height: 30px;
             position: absolute;
             top: 0;
         }
 
         .foot {
             border-color: blue;
-            height: 50px;
+            height: 30px;
             width:100%;
             position: absolute;
             bottom: 0;
@@ -45,10 +45,11 @@
         .body {
             overflow: auto;
               position: absolute;
-              top: 100px;
-            bottom: 50px;
+              top: 30px;
+            bottom: 30px;
             right: 0;
             left: 0;
+            -webkit-overflow-scrolling:touch;
         }
 
         .rt {
@@ -115,20 +116,36 @@
 
 
         var defaultPrevent=function(e){e.preventDefault();};
+        var adsfds=function(e) {
+            var target = e.target;
+
+            while (target !== document.body) {
+                if (target.classList.contains('foot')) {
+                    return;
+                }
+                target = target.parentNode;
+            }
+
+            input.blur();
+        };
 
         input.addEventListener('focus', function() {
             setTimeout(function () {
                 cont.style.height = window.innerHeight +'px';
                 document.body.scrollTop = document.documentElement.scrollTop = 0;
-            }, 0);
-            document.body.addEventListener("touchstart", defaultPrevent);
+            }, 100);
+
             document.body.addEventListener("touchmove" , defaultPrevent);
+
+            document.body.addEventListener('touchstart', adsfds);
         });
-        document.addEventListener('blur', function() {
+
+        input.addEventListener('blur', function() {
             cont.style.height = window.innerHeight +'px';
-            document.body.removeEventListener("touchstart", defaultPrevent);
+
             document.body.removeEventListener("touchmove" , defaultPrevent);
-        }, true);
+            document.body.removeEventListener('touchstart', adsfds);
+        });
     }
 
 
