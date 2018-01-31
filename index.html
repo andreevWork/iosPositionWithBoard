@@ -8,11 +8,11 @@
     <title>Document</title>
     <style>
         html, body, .cont {
-            position: absolute;
             width: 100%;
             height: 100%;
             margin: 0;
-            overflow: hidden;
+            position: absolute;
+            border:none;
         }
 
         * {
@@ -58,9 +58,9 @@
     </style>
 </head>
 <body>
-<div class="cont">
 
-<div class="head"></div>
+<div class="cont">
+    <div class="head"></div>
 <div class="body">
     <div class="rt">12341231234123412341234123</div>
     <div class="rt">12341231234123412341234123</div>
@@ -107,7 +107,6 @@
 </div>
 
 <script>
-    var heightBoard = document.documentElement.clientHeight - window.innerHeight;
     var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
     if (iOS) {
@@ -135,9 +134,12 @@
             setTimeout(function () {
                 if (prevH !== window.innerHeight) {
                     cont.style.height = window.innerHeight +'px';
-                    document.body.scrollTop = document.documentElement.scrollTop = 0;
+                } else {
+                    cont.style.height = window.innerHeight - window.pageYOffset +'px';
                 }
-            }, 100);
+
+                document.body.scrollTop = document.documentElement.scrollTop = 0;
+            }, 500);
 
             document.body.addEventListener("touchmove" , defaultPrevent);
 
@@ -145,7 +147,7 @@
         });
 
         input.addEventListener('blur', function() {
-            cont.style.height = window.innerHeight +'px';
+            cont.style.height = document.documentElement.clientHeight +'px';
 
             document.body.removeEventListener("touchmove" , defaultPrevent);
             document.body.removeEventListener('touchstart', adsfds);
