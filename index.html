@@ -116,6 +116,8 @@
 
 
         var defaultPrevent=function(e){e.preventDefault();};
+        var prevH = window.innerHeight;
+
         var adsfds=function(e) {
             var target = e.target;
 
@@ -131,8 +133,10 @@
 
         input.addEventListener('focus', function() {
             setTimeout(function () {
-                cont.style.height = window.innerHeight +'px';
-                document.body.scrollTop = document.documentElement.scrollTop = 0;
+                if (prevH !== window.innerHeight) {
+                    cont.style.height = window.innerHeight +'px';
+                    document.body.scrollTop = document.documentElement.scrollTop = 0;
+                }
             }, 100);
 
             document.body.addEventListener("touchmove" , defaultPrevent);
