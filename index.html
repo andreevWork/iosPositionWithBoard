@@ -131,15 +131,35 @@
         };
 
         input.addEventListener('focus', function() {
-            setTimeout(function () {
-                if (prevH !== window.innerHeight) {
-                    cont.style.height = window.innerHeight +'px';
-                } else {
-                    cont.style.height = window.innerHeight - window.pageYOffset +'px';
-                }
+            // setTimeout(function () {
+            //     if (prevH !== window.innerHeight) {
+            //         cont.style.height = window.innerHeight +'px';
+            //     } else {
+            //         cont.style.height = window.innerHeight - window.pageYOffset +'px';
+            //     }
+            //
+            //     document.body.scrollTop = document.documentElement.scrollTop = 0;
+            // }, 500);
 
-                document.body.scrollTop = document.documentElement.scrollTop = 0;
-            }, 500);
+            var prevG = window.pageYOffset;
+            function render(t) {
+                setTimeout(function() {
+                    if (prevG !== window.pageYOffset) {
+                        prevG = window.pageYOffset;
+                        render(50);
+                    } else {
+                        if (prevH !== window.innerHeight) {
+                            cont.style.height = window.innerHeight +'px';
+                        } else {
+                            cont.style.height = window.innerHeight - window.pageYOffset +'px';
+                        }
+
+                        document.body.scrollTop = document.documentElement.scrollTop = 0;
+                    }
+                }, t);
+            }
+
+            render(100);
 
             document.body.addEventListener("touchmove" , defaultPrevent);
 
