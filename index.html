@@ -21,11 +21,11 @@
 
         div {
             overflow: hidden;
-            border: 10px solid;
             width: 100%;
         }
 
         .head {
+            border: 10px solid;
             border-color: red;
             height: 30px;
             position: absolute;
@@ -33,6 +33,7 @@
         }
 
         .foot {
+            border: 10px solid;
             border-color: blue;
             height: 30px;
             width:100%;
@@ -43,6 +44,7 @@
         }
 
         .body {
+            border: 10px solid;
             overflow: auto;
               position: absolute;
               top: 30px;
@@ -109,43 +111,46 @@
 <script>
     var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     var isYaBrowser = /YaBrowser/.test(navigator.userAgent);
+    var input = document.querySelector('input');
+    var cont = document.querySelector('.cont');
+    var defaultPrevent=function(e){e.preventDefault();};
+    var bar = screen.availHeight === screen.height ? 0 : screen.availHeight - window.innerHeight;
+    var adsfds=function(e) {
+        var target = e.target;
 
-    if (iOS && !isYaBrowser) {
-        var input = document.querySelector('input');
-        var cont = document.querySelector('.cont');
-
-
-        var defaultPrevent=function(e){e.preventDefault();};
-        var prevH = window.innerHeight;
-
-        var adsfds=function(e) {
-            var target = e.target;
-
-            while (target !== document.body) {
-                if (target.classList.contains('foot')) {
-                    return;
-                }
-                target = target.parentNode;
+        while (target !== document.body) {
+            if (target.classList.contains('foot')) {
+                return;
             }
+            target = target.parentNode;
+        }
 
-            input.blur();
-        };
+        input.blur();
+    };
+    var defaultHeight = window.innerHeight;
 
+    show();
+
+    if (iOS) {
         input.addEventListener('focus', function() {
             var prevG = window.pageYOffset;
             function render(t) {
                 setTimeout(function() {
+                    show();
                     if (prevG !== window.pageYOffset) {
                         prevG = window.pageYOffset;
                         render(50);
                     } else {
-                        if (prevH !== window.innerHeight) {
-                            cont.style.height = window.innerHeight +'px';
-                        } else {
-                            cont.style.height = window.innerHeight - window.pageYOffset +'px';
-                        }
+                        setTimeout(function () {
+                            show();
+                            if (isYaBrowser) {
+                                cont.style.height = defaultHeight - window.pageYOffset + bar +'px';
+                            } else {
+                                cont.style.height = defaultHeight - window.pageYOffset +'px';
+                            }
 
-                        document.body.scrollTop = document.documentElement.scrollTop = 0;
+                            document.body.scrollTop = document.documentElement.scrollTop = 0;
+                        }, 100);
                     }
                 }, t);
             }
@@ -157,15 +162,34 @@
             document.body.addEventListener('touchstart', adsfds);
         });
 
+        input.addEventListener('input', function() {
+            setTimeout(function () {
+
+                document.body.scrollTop = document.documentElement.scrollTop = 0;
+            }, 0)
+        });
+
         input.addEventListener('blur', function() {
-            cont.style.height = document.documentElement.clientHeight +'px';
+            cont.style.height = defaultHeight +'px';
 
             document.body.removeEventListener("touchmove" , defaultPrevent);
             document.body.removeEventListener('touchstart', adsfds);
         });
     }
 
-
+    function show() {
+        var rr = document.createElement('div');
+        rr.textContent = '' +
+            'document.documentElement.clientHeight: ' + document.documentElement.clientHeight + " !!!!!" +
+            'window.innerHeight: ' + window.innerHeight + " !!!!!" +
+            'screen.height: ' + screen.height + " !!!!!" +
+            'screen.availHeight: ' + screen.availHeight + " !!!!!" +
+            'window.scrollY: ' + window.scrollY + " !!!!!" +
+            'window.window.pageYOffset: ' + window.window.pageYOffset + " !!!!!" +
+            'document.body.clientHeight: ' + document.body.clientHeight + " !!!!!" +
+            "#######################";
+        document.querySelector('.body').appendChild(rr);
+    }
 </script>
 </body>
 </html>
