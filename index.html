@@ -108,8 +108,9 @@
 
 <script>
     var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    var isYaBrowser = /YaBrowser/.test(navigator.userAgent);
 
-    if (iOS) {
+    if (iOS && !isYaBrowser) {
         var input = document.querySelector('input');
         var cont = document.querySelector('.cont');
 
@@ -131,16 +132,6 @@
         };
 
         input.addEventListener('focus', function() {
-            // setTimeout(function () {
-            //     if (prevH !== window.innerHeight) {
-            //         cont.style.height = window.innerHeight +'px';
-            //     } else {
-            //         cont.style.height = window.innerHeight - window.pageYOffset +'px';
-            //     }
-            //
-            //     document.body.scrollTop = document.documentElement.scrollTop = 0;
-            // }, 500);
-
             var prevG = window.pageYOffset;
             function render(t) {
                 setTimeout(function() {
